@@ -1,0 +1,1 @@
+cp artifacts/contracts/IPCContract.sol/IpcCore.json IPCContract.abi.json
