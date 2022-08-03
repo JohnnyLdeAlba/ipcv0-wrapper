@@ -29,9 +29,6 @@ interface IPCCore {
     external payable;
 }
 
-// multi searches
-// add money drainer!
-
 contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   using Strings for uint256;
@@ -83,8 +80,8 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
   constructor() ERC721A("Immortal Player Characters v0", "IPCV0") {
 
     contractAddress = 0x6a62dAFa4560357b35A3C70fC81868ce7Da3a062;
-    _tokenURI = "";
-    _contractURI = "";
+    _tokenURI = "https://website.com/token/";
+    _contractURI = "https://website.com/contract/";
 
     maxPrice = 100000000;
     tokenLimit = 1000;
@@ -223,7 +220,6 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
     return _contractURI;
   }
 
-  // need to add owner of.
   function getIpc(uint256 tokenId)
     public view
     returns (t_raw_ipc memory) {
@@ -336,6 +332,13 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   function totalSupply() public view override returns (uint256) {
     return IPCCore(contractAddress).totalSupply();
+  }
+
+  function withdrawVault()
+    onlyOwner {
+
+    (bool success, ) = msg.sender.call{value: address(this).balance}("");
+    require(success, "VAULT_TRANSFER_FAILED");
   }
 
   function onERC721Received(
