@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IPCCore",
-  "sourceName": "contracts/IPCContract.sol",
+  "sourceName": "contracts/IPCWrapper.sol",
   "abi": [
     {
       "anonymous": false,

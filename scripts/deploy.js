@@ -1,11 +1,11 @@
-const contractAbi = require('../IPCContract.abi.json');
+const contractAbi = require('../IPCWrapper.abi.json');
 
 async function main() {
 
   const [ deployer ] = await ethers.getSigners();
 
-  console.log("Deploying contracts with the account:", deployer.address);
-  const ContractFactory = await ethers.getContractFactory("IPCV0Wrapper");
+  console.log("Deploying contract using the account:", deployer.address);
+  const ContractFactory = await ethers.getContractFactory("IPCWrapper");
 
   const deploymentData = ContractFactory.interface.encodeDeploy();
   const estimatedGas = await ethers.provider.estimateGas({data: deploymentData});

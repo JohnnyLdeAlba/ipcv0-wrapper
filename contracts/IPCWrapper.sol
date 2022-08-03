@@ -29,7 +29,7 @@ interface IPCCore {
     external payable;
 }
 
-contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
+contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   using Strings for uint256;
 
@@ -335,6 +335,7 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
   }
 
   function withdrawVault()
+    external
     onlyOwner {
 
     (bool success, ) = msg.sender.call{value: address(this).balance}("");

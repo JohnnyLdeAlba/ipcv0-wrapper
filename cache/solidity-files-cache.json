@@ -74,10 +74,10 @@
         "IERC721A"
       ]
     },
-    "/var/www/ipcv0-wrapper/contracts/IPCContract.sol": {
-      "lastModificationDate": 1659560184300,
-      "contentHash": "53b5ffa817c72d7954513ffce0983052",
-      "sourceName": "contracts/IPCContract.sol",
+    "/var/www/ipcv0-wrapper/contracts/IPCWrapper.sol": {
+      "lastModificationDate": 1659561110478,
+      "contentHash": "ceca837e9fe688cf7ebb6c83844a0591",
+      "sourceName": "contracts/IPCWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -111,7 +111,7 @@
       ],
       "artifacts": [
         "IPCCore",
-        "IPCV0Wrapper"
+        "IPCWrapper"
       ]
     },
     "/var/www/ipcv0-wrapper/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
@@ -184,41 +184,6 @@
       ],
       "artifacts": [
         "Strings"
-      ]
-    },
-    "/var/www/ipcv0-wrapper/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
-      "lastModificationDate": 1659419036213,
-      "contentHash": "c22d4395e33763de693fd440c6fd10e1",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC721Receiver"
       ]
     },
     "/var/www/ipcv0-wrapper/node_modules/@openzeppelin/contracts/utils/Context.sol": {
