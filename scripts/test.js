@@ -17,30 +17,39 @@ async function main() {
 
   const [ deployer, account1 ] = await ethers.getSigners();
 
-  const contract = new ethers.Contract("0xDf2195e60007d0d4343D707D3cc274edf9eDD1A8", contractABI, deployer);
+  const contract = new ethers.Contract("0xC58Bc35954b5a7C00Bb4016368c634925944a65B", contractABI, deployer);
 /*
-  contract.on("Logging", (before, after, result) => {
+  contract.on("Logging", (before) => {
 
     console.log(
-      " before: " + ethers.utils.formatEther(before) +
-      " after: " + ethers.utils.formatEther(after) +
-      " result: " + ethers.utils.formatEther(result)
+      " before: " + before
     );
   });
 */
   let before = await deployer.getBalance();
   console.log("Account balance before: " + before);
 
+
   let message = await contract.name();
   console.log("Returned: " + message);
+/*
+  message = await contract.getIpc(1);
+  console.log("Returned: " + message);
+  message = await contract.ownerOf(1);
+  console.log("Returned: " + message);
+*/
+  await contract.connect(deployer).wrap(14);
+  await contract.connect(deployer).unwrap(14);
 
-  await contract.connect(deployer).releaseNewTranche();
 
-  console.log("Tranche released...");
-
+/*
   await mint(contract, deployer, 101);
 
   message = await contract.getIpc(2);
+  console.log("Returned: " + message);
+*/
+
+  message = await contract.getTokenIndex(13);
   console.log("Returned: " + message);
 
   let after = await deployer.getBalance();

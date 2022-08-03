@@ -75,8 +75,8 @@
       ]
     },
     "/var/www/ipcv0-wrapper/contracts/IPCContract.sol": {
-      "lastModificationDate": 1659444879735,
-      "contentHash": "26474fdbf28fdce85ffdfa33f85597a3",
+      "lastModificationDate": 1659489794728,
+      "contentHash": "c5723cac7b9f7f4ea10f93df8288d834",
       "sourceName": "contracts/IPCContract.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -104,7 +104,6 @@
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/utils/Strings.sol",
-        "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
         "./ERC721A.sol"
       ],
       "versionPragmas": [

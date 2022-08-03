@@ -4,6 +4,19 @@
   "sourceName": "contracts/IPCContract.sol",
   "abi": [
     {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "Logging",
+      "type": "event"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -99,7 +112,7 @@
       ],
       "name": "setIpcPrice",
       "outputs": [],
-      "stateMutability": "payable",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
