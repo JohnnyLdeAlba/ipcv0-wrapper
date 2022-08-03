@@ -378,6 +378,11 @@
               "internalType": "uint128",
               "name": "timeOfBirth",
               "type": "uint128"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
             }
           ],
           "internalType": "struct IPCV0Wrapper.t_raw_ipc[]",
@@ -418,29 +423,46 @@
       "name": "getIpc",
       "outputs": [
         {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "attributeSeed",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "dna",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint128",
-          "name": "experience",
-          "type": "uint128"
-        },
-        {
-          "internalType": "uint128",
-          "name": "timeOfBirth",
-          "type": "uint128"
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "attributeSeed",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "dna",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint128",
+              "name": "experience",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "timeOfBirth",
+              "type": "uint128"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IPCV0Wrapper.t_raw_ipc",
+          "name": "",
+          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -519,6 +541,72 @@
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "total",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTokensOfOwner",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "attributeSeed",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "dna",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint128",
+              "name": "experience",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "timeOfBirth",
+              "type": "uint128"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct IPCV0Wrapper.t_raw_ipc[]",
+          "name": "",
+          "type": "tuple[]"
         }
       ],
       "stateMutability": "view",

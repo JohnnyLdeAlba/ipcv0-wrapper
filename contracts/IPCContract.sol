@@ -308,11 +308,11 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
       uint256[] memory tokensOfOwner = IPCCore(contractAddress).tokensOfOwner(owner);
       uint256 totalTokens = tokensOfOwner.length;
 
-      if (startIndex == 0 || startIndex > totalTokens)
-        startIndex = 1;
+      if (startIndex > totalTokens)
+        startIndex = 0;
 
       if (total == 0 || total > totalTokens - startIndex)
-        total = totalTokens - startIndex;
+        total = (totalTokens - 1) - startIndex;
 
       t_raw_ipc[] memory tokensList = new t_raw_ipc[](total + 1);
 
@@ -329,13 +329,6 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
         token = getIpc(tokenId);
 
 	tokensList[index] = token;
-      }
-
-      tokenId = totalSupply();
-      token = getIpc(tokenId);
-
-      if (token.owner == owner) {
-        tokensList[index] = token;
       }
 
       return tokensList;

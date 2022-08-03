@@ -4,7 +4,7 @@ async function main() {
 
   const [ deployer, account1 ] = await ethers.getSigners();
 
-  const contract = new ethers.Contract("0xC379009D0db55D956Fe897965770216E4eE8C180", contractABI, deployer);
+  const contract = new ethers.Contract("0x557F6D80df6F25aC9272EB4b1e136EcAcbD9d0c7", contractABI, deployer);
 /*
   contract.on("Logging", (before) => {
 
@@ -32,7 +32,7 @@ async function main() {
 
   // await contract.connect(deployer).unwrap(14);
 
-  message = await contract.getAllTokens(1, 100);
+  message = await contract.getTokensOfOwner(deployer.getAddress(), 10, 20);
   console.log("Returned: " + message);
 
   // await contract.connect(deployer).changeIpcName(tokenId, "Aarkonviox", {value: ethers.utils.parseEther("6")});

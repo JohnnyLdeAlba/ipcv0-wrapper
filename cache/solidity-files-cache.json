@@ -75,8 +75,8 @@
       ]
     },
     "/var/www/ipcv0-wrapper/contracts/IPCContract.sol": {
-      "lastModificationDate": 1659559435556,
-      "contentHash": "49321e3269aeadbb7db6b0aa16e069d4",
+      "lastModificationDate": 1659560184300,
+      "contentHash": "53b5ffa817c72d7954513ffce0983052",
       "sourceName": "contracts/IPCContract.sol",
       "solcConfig": {
         "version": "0.8.9",
