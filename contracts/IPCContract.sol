@@ -20,6 +20,8 @@ interface IPCCore {
   function ownerOf(uint256 tokenId) external view returns (address);
   function totalSupply() external view returns (uint256);
   function setIpcPrice(uint tokenId, uint newPrice) external;
+  function changeIpcName(uint tokenId, string calldata newName) external payable;
+
   function safeTransferFrom(
     address from,
     address to,
@@ -29,6 +31,7 @@ interface IPCCore {
 
 // add name changer
 // multi searches
+// display contract stats to admin
 
 contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
@@ -60,7 +63,7 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   constructor() ERC721A("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0x5F68F9306FAD5850CA1bb53BFd2ad7B0ae1a24fF;
+    contractAddress = 0xE902e1aE262DCf161d6a2F1Be71fc16CC9AFDDD6;
     _tokenURI = "";
     _contractURI = "";
 
@@ -70,20 +73,21 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   // Wrap function doesn't work without prior approval.
   function wrap(uint256 tokenId)
-    external payable {
+    external {
 
       if (tokenId > tokenLimit)
         revert TokenLimitReached();
 
+      address owner = msg.sender;
+
       IPCCore(contractAddress).safeTransferFrom(
-        msg.sender,
+        owner,
 	address(this),
 	tokenId
       );
 
       IPCCore(contractAddress).setIpcPrice(tokenId, maxPrice);
 
-      address owner = msg.sender;
       uint256 tokenIndex = _nextTokenId();
 
       tokenList[tokenIndex] = t_token(tokenId, owner);
@@ -127,6 +131,11 @@ contract IPCV0Wrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
     );
    
     emit Unwrapped(tokenIndex, tokenId, owner);
+  }
+
+  function changeIpcName(uint tokenId, string calldata newName)
+    external payable {
+      IPCCore(contractAddress).changeIpcName{value: msg.value}(tokenId, newName);
   }
 
   function _startTokenId()

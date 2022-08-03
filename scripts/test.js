@@ -1,23 +1,10 @@
 const contractABI = require('../IPCContract.abi.json');
 
-async function mint(contract, deployer, quantity) {
-
-  let index;
-  for (index = 0; index < quantity; index++) {
-
-    await contract.connect(deployer).createRandomizedIpc(
-      "Adam",
-      1000,
-      {value: ethers.utils.parseEther("1")}
-    );
-  }
-}
-
 async function main() {
 
   const [ deployer, account1 ] = await ethers.getSigners();
 
-  const contract = new ethers.Contract("0xC58Bc35954b5a7C00Bb4016368c634925944a65B", contractABI, deployer);
+  const contract = new ethers.Contract("0x35D983591bd363BE64afBcD4b6c8A97F3c164dA1", contractABI, deployer);
 /*
   contract.on("Logging", (before) => {
 
@@ -38,18 +25,21 @@ async function main() {
   message = await contract.ownerOf(1);
   console.log("Returned: " + message);
 */
-  await contract.connect(deployer).wrap(14);
-  await contract.connect(deployer).unwrap(14);
+  // await contract.connect(deployer).wrap(5);
 
+  // await contract.connect(deployer).unwrap(14);
+
+  message = await contract.getTokenOwnership(5);
+  console.log("Returned: " + message);
+
+  await contract.connect(deployer).changeIpcName(5, "Arkonviox", {value: ethers.utils.parseEther("2")});
 
 /*
-  await mint(contract, deployer, 101);
-
   message = await contract.getIpc(2);
   console.log("Returned: " + message);
 */
 
-  message = await contract.getTokenIndex(13);
+  message = await contract.getIpc(4);
   console.log("Returned: " + message);
 
   let after = await deployer.getBalance();
