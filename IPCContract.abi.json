@@ -51,12 +51,12 @@
     },
     {
       "inputs": [],
-      "name": "TokenLimitReached",
+      "name": "TokenDoesntExist",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "TokenNotExist",
+      "name": "TokenLimitReached",
       "type": "error"
     },
     {
@@ -336,6 +336,62 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "startIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "total",
+          "type": "uint256"
+        }
+      ],
+      "name": "getAllTokens",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "attributeSeed",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "dna",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint128",
+              "name": "experience",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "timeOfBirth",
+              "type": "uint128"
+            }
+          ],
+          "internalType": "struct IPCV0Wrapper.t_raw_ipc[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
         }
@@ -385,6 +441,46 @@
           "internalType": "uint128",
           "name": "timeOfBirth",
           "type": "uint128"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getProperties",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "contractAdress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "tokenURI",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "contractURI",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenLimit",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IPCV0Wrapper.t_properties",
+          "name": "",
+          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -652,51 +748,27 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "_maxPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenLimit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "__tokenURI",
+          "type": "string"
+        },
+        {
           "internalType": "string",
           "name": "__contractURI",
           "type": "string"
         }
       ],
-      "name": "setContractURI",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_maxPrice",
-          "type": "uint256"
-        }
-      ],
-      "name": "setMaxPrice",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_tokenLimit",
-          "type": "uint256"
-        }
-      ],
-      "name": "setTokenLimit",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "__tokenURI",
-          "type": "string"
-        }
-      ],
-      "name": "setTokenURI",
+      "name": "setProperties",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
