@@ -79,11 +79,11 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   constructor() ERC721A("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0x6a62dAFa4560357b35A3C70fC81868ce7Da3a062;
+    contractAddress = 0xEd0bC1F0A364e4e4fd275D663397268ce88610ff;
     _tokenURI = "https://website.com/token/";
     _contractURI = "https://website.com/contract/";
 
-    maxPrice = 100000000;
+    maxPrice = 1000000;
     tokenLimit = 1000;
   }
 
@@ -162,6 +162,11 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
   function changeIpcName(uint tokenId, string calldata newName)
     external payable {
 
+      uint256 tokenIndex = tokenIndexList[tokenId];
+
+      if (tokenList[tokenIndex].owner != msg.sender)
+        revert TokenNotOwner();
+
       IPCCore(contractAddress).changeIpcName{value: msg.value}(tokenId, newName);
   }
 
@@ -232,7 +237,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 	uint128 timeOfBirth
       ) = IPCCore(contractAddress).getIpc(tokenId);
 
-      address owner = IPCCore(contractAddress).ownerOf(tokenId);
+      address owner = ownerOf(tokenId);
       t_raw_ipc memory token = t_raw_ipc(	  
         tokenId,
         name,
@@ -286,7 +291,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
         return tokensList;
 
       uint256 index;
-      for (index = 0; index < total; index++) {
+      for (index = 0; index <= total; index++) {
 
         uint256 tokenId = startIndex + index;
         t_raw_ipc memory token = getIpc(tokenId);
@@ -310,7 +315,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
       if (total == 0 || total > totalTokens - startIndex)
         total = (totalTokens - 1) - startIndex;
 
-      t_raw_ipc[] memory tokensList = new t_raw_ipc[](total + 1);
+      t_raw_ipc[] memory tokensList = new t_raw_ipc[](total);
 
       if (totalTokens == 0)
         return tokensList;
@@ -334,7 +339,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
     return IPCCore(contractAddress).totalSupply();
   }
 
-  function withdrawVault()
+  function withdrawalVault()
     external
     onlyOwner {
 

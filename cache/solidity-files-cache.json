@@ -75,8 +75,8 @@
       ]
     },
     "/var/www/ipcv0-wrapper/contracts/IPCWrapper.sol": {
-      "lastModificationDate": 1659561110478,
-      "contentHash": "ceca837e9fe688cf7ebb6c83844a0591",
+      "lastModificationDate": 1659566480328,
+      "contentHash": "53c414552da3bcf5363994b9208292a9",
       "sourceName": "contracts/IPCWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
