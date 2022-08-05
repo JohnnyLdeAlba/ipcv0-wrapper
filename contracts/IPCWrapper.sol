@@ -1,3 +1,10 @@
+/*
+
+  DO NOT USE!!! CRITICAL FLAW FOUND!!!
+  WRAPPER DOES NOT CHANGE OWNERS DURING TRANSFER.
+
+*/
+
 pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
