@@ -1,10 +1,3 @@
-/*
-
-  DO NOT USE!!! CRITICAL FLAW FOUND!!!
-  WRAPPER DOES NOT CHANGE OWNERS DURING TRANSFER.
-
-*/
-
 pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -27,7 +20,7 @@ interface IPCCore {
   function tokensOfOwner(address owner) external view returns (uint256[] memory);
   function totalSupply() external view returns (uint256);
   function setIpcPrice(uint tokenId, uint newPrice) external;
-  function changeIpcName(uint tokenId, string memory newName) external payable;
+  function changeIpcName(uint tokenId, string calldata newName) external payable;
 
   function safeTransferFrom(
     address from,
@@ -39,6 +32,15 @@ interface IPCCore {
 contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   using Strings for uint256;
+
+  struct t_debug {
+    uint256 d1;
+    uint256 d2;
+    uint256 d3;
+    uint256 d4;
+    address a1;
+    string buffer;
+  }
 
   struct t_properties {
 
@@ -64,6 +66,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
     address owner;
   }
 
+  t_debug debug;
   address contractAddress;
 
   string _tokenURI;
@@ -86,13 +89,44 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   constructor() ERC721A("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0xEd0bC1F0A364e4e4fd275D663397268ce88610ff;
+    contractAddress = 0xea8F7655cc13ED539CDa9057c2E6F06631f7038f;
     _tokenURI = "https://website.com/token/";
     _contractURI = "https://website.com/contract/";
 
     maxPrice = 1000000;
     tokenLimit = 1000;
   }
+
+  function setDebugger(
+    uint256 d1,
+    uint256 d2,
+    uint256 d3,
+    uint256 d4,
+    address a1,
+    string calldata buffer
+  )
+    internal
+    returns (t_debug memory) {
+
+      debug.d1 = d1;
+      debug.d2 = d2;
+      debug.d3 = d3;
+      debug.d4 = d4;
+      debug.a1 = a1;
+
+      debug.buffer = buffer;
+ }
+
+ function getDebugger()
+   external view
+   returns (
+     uint256 d1,
+     uint256 d2,
+     uint256 d3,
+     uint256 d4,
+     address a1,
+     string memory buffer
+   ) { return (debug.d1, debug.d2, debug.d3, debug.d4, debug.a1, debug.buffer); }
 
   // Wrap function doesn't work without prior approval.
   function wrap(uint256 tokenId)
@@ -166,13 +200,14 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
     emit Unwrapped(tokenIndex, tokenId, owner);
   }
 
+  // changeIpcName only works on wrapped tokens.
   function changeIpcName(uint tokenId, string calldata newName)
     external payable {
 
       uint256 tokenIndex = tokenIndexList[tokenId];
 
       if (tokenList[tokenIndex].owner != msg.sender)
-        revert TokenNotOwner();
+        revert("TOKEN_NOT_OWNER");
 
       IPCCore(contractAddress).changeIpcName{value: msg.value}(tokenId, newName);
   }
