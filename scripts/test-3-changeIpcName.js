@@ -1,8 +1,8 @@
 const contractABI = require('../IPCWrapper.abi.json');
 const oldContractABI = require('../../ipc-contract/IPCContract.abi.json');
 
-const wrapAddress = "0x205D880f9144772A7aC2373eeF9E8Eb9a77f78CB";
-const oldAddress = "0xea8F7655cc13ED539CDa9057c2E6F06631f7038f";
+const wrapAddress = "0x8Db86cB5BeF0c76A8C48C403255CE8EDDb3fD0c2";
+const oldAddress = "0xf3a8BB61d607c5Fa0a9FBd995c16D412F639731F";
 
 async function main() {
 
@@ -17,7 +17,7 @@ async function main() {
   let message = await contract.name();
   console.log("Returned: " + message);
 
-  let tokenId = 7;
+  let tokenId = 15;
 
   message = await contract.getIpc(tokenId);
   console.log("Before Name Change: " + message);
@@ -32,14 +32,20 @@ async function main() {
   console.log("NuDebugger: " + message);
 
   // await oldContract.connect(account1).approve(wrapAddress, tokenId);
-  // await contract.connect(account1).wrap(tokenId);
+  await contract.connect(account1).unwrap(tokenId);
 
   // return;
 
-  await contract.connect(account1).changeIpcName(tokenId, "Eva", {value: ethers.utils.parseEther("1")});
+  // await oldContract.connect(deployer).buyIpc(tokenId, 1);
+
+  await oldContract.connect(deployer).approve(wrapAddress, tokenId);
+  await contract.connect(deployer).wrap(tokenId);
 
   message = await contract.getIpc(tokenId);
   console.log("After Name Change: " + message);
+
+  message = await contract.getTokenIndex(tokenId);
+  console.log("tokenId: " + message);
 
   message = await contract.getTokenOwnership(tokenId);
   console.log("Ownership: " + message);
