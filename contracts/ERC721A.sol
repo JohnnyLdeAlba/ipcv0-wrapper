@@ -422,7 +422,13 @@ contract ERC721A is IERC721A {
      *
      * Emits an {Approval} event.
      */
+
+    function _approve(address to, uint256 tokenId) internal {
+        _tokenApprovals[tokenId].value = to;
+    }
+
     function approve(address to, uint256 tokenId) public virtual override {
+
         address owner = ownerOf(tokenId);
 
         if (_msgSenderERC721A() != owner)
@@ -431,6 +437,7 @@ contract ERC721A is IERC721A {
             }
 
         _tokenApprovals[tokenId].value = to;
+
         emit Approval(owner, to, tokenId);
     }
 
@@ -598,7 +605,8 @@ contract ERC721A is IERC721A {
             }
         }
 
-        emit Transfer(from, to, tokenId);
+	// Removed event so we can intercept in our inherited contract.
+        // emit Transfer(from, to, tokenId);
         _afterTokenTransfers(from, to, tokenId, 1);
     }
 

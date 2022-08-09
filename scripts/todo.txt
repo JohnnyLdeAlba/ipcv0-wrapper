@@ -1,6 +1,0 @@
-Todo
-[ ] 2. wrap-buy-unwrap // Need to initiate a buy from the contract then unwrap
-[ ] 3. nameChange // Not working not sure why
-[ ] 8. getAllTokens (updated) // updated and need to make sure is safe
-[ ] 9. getTokensOfOwner // same as prev.
-[ ] 10 transfer ownership
