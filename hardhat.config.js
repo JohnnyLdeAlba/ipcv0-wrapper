@@ -30,7 +30,7 @@ module.exports = {
 
       url: "https://eth-mainnet.g.alchemy.com/v2/6fYLeoOJ3Vp6ONxoiJ0jWkEYGcR8vRIH",
       accounts: [
-	"0x9934f0af98b2ef9db0a96f81a728fe6ffc724476de392ae0b7566a6fb84b3b84"
+	""
       ] 
     }
 
