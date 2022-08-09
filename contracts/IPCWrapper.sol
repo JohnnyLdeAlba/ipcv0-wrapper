@@ -33,16 +33,6 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   using Strings for uint256;
 
-  struct t_debug {
-    uint256 d1;
-    uint256 d2;
-    uint256 d3;
-    uint256 d4;
-    address a1;
-    address a2;
-    string buffer;
-  }
-
   struct t_properties {
 
     address contractAdress;
@@ -67,7 +57,6 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
     address owner;
   }
 
-  t_debug debug;
   address contractAddress;
 
   string _tokenURI;
@@ -86,46 +75,13 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   constructor() ERC721A("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0x69af343852e04F7B5A6Fcae87Be1472A43C63Db8;
-    _tokenURI = "https://website.com/token/";
-    _contractURI = "https://website.com/contract/";
+    contractAddress = 0x4787993750B897fBA6aAd9e7328FC4F5C126e17c;
+    _tokenURI = "https://nexusultima.com/ipcv0/tokens/";
+    _contractURI = "https://nexusultima.com/ipcv0/contract/";
 
     maxPrice = 1000000;
     tokenLimit = 1000;
   }
-
-  function setDebugger(
-    uint256 d1,
-    uint256 d2,
-    uint256 d3,
-    uint256 d4,
-    address a1,
-    address a2,
-    string memory buffer
-  )
-    internal {
-
-      debug.d1 = d1;
-      debug.d2 = d2;
-      debug.d3 = d3;
-      debug.d4 = d4;
-      debug.a1 = a1;
-      debug.a2 = a2;
-
-      debug.buffer = buffer;
- }
-
- function getDebugger()
-   external view
-   returns (
-     uint256 d1,
-     uint256 d2,
-     uint256 d3,
-     uint256 d4,
-     address a1,
-     address a2,
-     string memory buffer
-   ) { return (debug.d1, debug.d2, debug.d3, debug.d4, debug.a1, debug.a2, debug.buffer); }
 
   function _removeOwnersToken(address owner, uint256 tokenId) 
     private {
@@ -166,6 +122,9 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
       uint256 tokenIndex = getTokenIndex(tokenId);
 
+      if (_nextTokenId() >= (2**256 - 1))
+        revert("UNABLE_TO_WRAP_TOKEN");
+
       if (tokenId > tokenLimit && tokenIndex == 0)
         revert("TOKEN_LIMIT_REACHED");
 
@@ -201,7 +160,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
       tokens[tokenIndex] = t_token(tokenId, sender);
       tokenIndexList[tokenId] = tokenIndex;
-      tokensOfOwner[sender].push(tokenIndex);
+      tokensOfOwner[sender].push(tokenId);
 
       _safeMint(sender, 1);
       emit Wrapped(tokenIndex, tokenId, sender);
@@ -287,12 +246,20 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
       uint256[] memory ownersTokens = tokensOfOwner[owner];
       uint256 totalTokens = ownersTokens.length;
-  
+
       if (startIndex > totalTokens)
         startIndex = 0;
 
-      if (total == 0 || total > totalTokens - startIndex)
-        total = totalTokens - startIndex;
+      if (totalTokens > 0) {
+
+        if (total == 0 || total > totalTokens - startIndex)
+          total = totalTokens - startIndex;
+      }
+      else {
+
+        totalTokens = 0;
+	total = 1;
+      }
 
       t_raw_ipc[] memory tokensList = new t_raw_ipc[](total);
       if (totalTokens == 0)
@@ -306,8 +273,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
       for (index = 0; index < total; index++) {
 
-        tokenIndex = getTokenIndex(startIndex + index);
-	tokenId = tokens[tokenIndex].tokenId;
+        tokenId = ownersTokens[startIndex + index];
         token = getIpc(tokenId);
 
 	tokensList[index] = token;
@@ -330,8 +296,15 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
       if (startIndex == 0 || startIndex > totalTokens)
         startIndex = 1;
 
-      if (total == 0 || total > totalTokens + 1 - startIndex)
-        total = totalTokens - startIndex;
+      if (totalTokens > 0) {
+        if (total == 0 || total > totalTokens + 1 - startIndex)
+          total = totalTokens - startIndex;
+      }
+      else {
+
+        totalTokens = 0;
+	total = 1;
+      }
 
       t_raw_ipc[] memory tokensList = new t_raw_ipc[](total);
       if (totalTokens == 0)
@@ -367,8 +340,16 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
       if (startIndex > totalTokens)
         startIndex = 0;
 
-      if (total == 0 || total > totalTokens - startIndex)
-        total = totalTokens - startIndex;
+      if (totalTokens > 0) {
+
+        if (total == 0 || total > totalTokens - startIndex)
+          total = totalTokens - startIndex;
+     }
+     else {
+
+       totalTokens = 0;
+       total = 1;
+     }
 
       t_raw_ipc[] memory tokensList = new t_raw_ipc[](total);
       if (totalTokens == 0)

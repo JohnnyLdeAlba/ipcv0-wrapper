@@ -23,6 +23,16 @@ module.exports = {
         "0x0b88b0e069716f85ddc35abf0b32c126fbc901c1652b7fa6c9b0c52e6d85ee32",
 	"0x7d265e8b9eb8612f36a2c9d4a1062fb9a0e5fba8f16b72e0331345df1ea7164f"
       ] 
+    },
+
+    mainnet: {
+      allowUnlimitedContractSize: true,
+
+      url: "https://eth-mainnet.g.alchemy.com/v2/6fYLeoOJ3Vp6ONxoiJ0jWkEYGcR8vRIH",
+      accounts: [
+	"0x9934f0af98b2ef9db0a96f81a728fe6ffc724476de392ae0b7566a6fb84b3b84"
+      ] 
     }
+
   }
 };
