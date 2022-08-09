@@ -356,49 +356,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "getDebugger",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "d1",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "d2",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "d3",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "d4",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "a1",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "a2",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "buffer",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",

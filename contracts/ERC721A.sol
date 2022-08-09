@@ -775,6 +775,8 @@ contract ERC721A is IERC721A {
                 // Mask `to` to the lower 160 bits, in case the upper bits somehow aren't clean.
                 toMasked := and(to, _BITMASK_ADDRESS)
                 // Emit the `Transfer` event.
+		// Disabled event in order to intercept it.
+		/*
                 log4(
                     0, // Start of data (0, since no data).
                     0, // End of data (0, since no data).
@@ -783,6 +785,7 @@ contract ERC721A is IERC721A {
                     toMasked, // `to`.
                     startTokenId // `tokenId`.
                 )
+                */
 
                 for {
                     let tokenId := add(startTokenId, 1)
@@ -790,14 +793,15 @@ contract ERC721A is IERC721A {
                     tokenId := add(tokenId, 1)
                 } {
                     // Emit the `Transfer` event. Similar to above.
-                    log4(0, 0, _TRANSFER_EVENT_SIGNATURE, 0, toMasked, tokenId)
+		    // Disabled event in order to intercept it.
+                    // log4(0, 0, _TRANSFER_EVENT_SIGNATURE, 0, toMasked, tokenId)
                 }
             }
             if (toMasked == 0) revert MintToZeroAddress();
 
             _currentIndex = end;
         }
-        _afterTokenTransfers(address(0), to, startTokenId, quantity);
+        // _afterTokenTransfers(address(0), to, startTokenId, quantity);
     }
 
     /**
@@ -977,8 +981,8 @@ contract ERC721A is IERC721A {
             }
         }
 
-        emit Transfer(from, address(0), tokenId);
-        _afterTokenTransfers(from, address(0), tokenId, 1);
+        // emit Transfer(from, address(0), tokenId);
+        // _afterTokenTransfers(from, address(0), tokenId, 1);
 
         // Overflow not possible, as _burnCounter cannot be exceed _currentIndex times.
         unchecked {

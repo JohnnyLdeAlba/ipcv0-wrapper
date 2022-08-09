@@ -1,8 +1,8 @@
 const contractABI = require('../IPCWrapper.abi.json');
 const oldContractABI = require('../../ipc-contract/IPCContract.abi.json');
 
-const wrapAddress = "0xec78eAfFB7f5AE5bebDFc531817d0Ed4469D3b66";
-const oldAddress = "0x319A8cb1246228b273C875bFA913884Cd4183583";
+const wrapAddress = "0xD0f54E91ee2e57EA72B0836565E8dfFDb0a5F950";
+const oldAddress = "0xACE8AA6699F1E71f07622135A93140cA296D610a";
 
 async function main() {
 
@@ -17,7 +17,7 @@ async function main() {
   let message = await contract.name();
   console.log("Returned: " + message);
 
-  let tokenId = 944;
+  let tokenId = 1;
 
   message = await contract.getTokenIndex(tokenId);
   console.log("Before tokenIndex: " + message);
@@ -47,13 +47,14 @@ async function main() {
 
   // await oldContract.connect(account1).approve(wrapAddress, tokenId);
   // await contract.connect(account1).wrap(tokenId);
-  // await contract.connect(account1).unwrap(tokenId);
+  message = await contract.connect(deployer).getProperties();
+  console.log("Returned: " + message);
 
   // await oldContract.connect(deployer).buyIpc(tokenId, 0);
 
   // await oldContract.connect(deployer).approve(wrapAddress, tokenId);
   // await contract.connect(account1).unwrap(tokenId);
-  await contract.connect(deployer).wrap(tokenId);
+  // await contract.connect(deployer).wrap(tokenId);
 
   // await contract.connect(account1).approve(deployer.address, tokenId);
   // await contract.connect(deployer)["safeTransferFrom(address,address,uint256)"](account1.address, deployer.address, tokenId);

@@ -75,7 +75,7 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   constructor() ERC721A("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0x4787993750B897fBA6aAd9e7328FC4F5C126e17c;
+    contractAddress = 0xACE8AA6699F1E71f07622135A93140cA296D610a;
     _tokenURI = "https://nexusultima.com/ipcv0/tokens/";
     _contractURI = "https://nexusultima.com/ipcv0/contract/";
 
@@ -163,6 +163,8 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
       tokensOfOwner[sender].push(tokenId);
 
       _safeMint(sender, 1);
+
+      emit Transfer(address(0), sender, tokenId);   
       emit Wrapped(tokenIndex, tokenId, sender);
   }
 
@@ -197,7 +199,8 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
         tokenId
       );
     }
-   
+
+    emit Transfer(sender, address(0), tokenId);   
     emit Unwrapped(tokenIndex, tokenId, sender);
   }
 
@@ -266,7 +269,6 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
         return tokensList;
 
       uint256 index;
-      uint256 tokenIndex;
       uint256 tokenId;
 
       t_raw_ipc memory token;
@@ -421,6 +423,17 @@ contract IPCWrapper is Ownable, ERC721A__IERC721Receiver, ERC721A {
 
   function contractURI() public view returns (string memory) {
     return _contractURI;
+  }
+
+  function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+
+    t_raw_ipc memory ipc = getIpc(tokenId);
+
+    if (ipc.tokenId == 0)
+      revert URIQueryForNonexistentToken();
+
+    string memory baseURI = _baseURI();
+    return bytes(baseURI).length != 0 ? string(abi.encodePacked(baseURI, _toString(tokenId))) : '';
   }
 
   function onERC721Received(
