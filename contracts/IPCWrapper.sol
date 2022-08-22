@@ -75,7 +75,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
   constructor() ERC721("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0xACE8AA6699F1E71f07622135A93140cA296D610a;
+    contractAddress = 0xC8f17e7A7911A409ABb8e24668D5e24956D5caCc;
     _tokenURI = "https://nexusultima.com/ipcv0/tokens/";
     _contractURI = "https://nexusultima.com/ipcv0/contract/";
 
@@ -117,25 +117,23 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
       if (tokenId > tokenLimit && _exists(tokenId) == false)
         revert("TOKEN_LIMIT_REACHED");
 
-      address sender = msg.sender;
-
       // If the token was stolen _exists will not be equal to false. We want the function to wrap
       // reguardless, otherwise the database could get corrupted.
 
       if (_exists(tokenId)) {
 
-        if (wOwnerOf(tokenId) != sender)
+        if (wOwnerOf(tokenId) != msg.sender)
           revert("NOT_OWNERS_TOKEN");
 	else
 	  revert("TOKEN_ALREADY_WRAPPED");
       }
 
       address sourceOwner = uwOwnerOf(tokenId);
-      if (sourceOwner != sender)
+      if (sourceOwner != msg.sender)
         revert("NOT_OWNERS_TOKEN");
 
       IPCCore(contractAddress).safeTransferFrom(
-        sender,
+        msg.sender,
 	address(this),
 	tokenId
       );
@@ -143,10 +141,8 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
       if (marketPlaceEnabled)
         IPCCore(contractAddress).setIpcPrice(tokenId, maxPrice);
 
-
-      _safeMint(sender, tokenId);
-
-      emit Wrapped(tokenId, sender);
+      _safeMint(msg.sender, tokenId);
+      emit Wrapped(tokenId, msg.sender);
   }
 
   function unwrap(uint256 tokenId) public {
@@ -162,8 +158,6 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
         revert("NOT_OWNERS_TOKEN");
     }
 
-    _burn(tokenId);
-
     // If sourceOwner is not equal to contract then the token was stolen and the function will unwrap anyways. 
     if (sourceOwner == address(this)) {
 
@@ -174,6 +168,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
       );
     }
 
+    _burn(tokenId);
     emit Unwrapped(tokenId, msg.sender);
   }
 
@@ -189,6 +184,20 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
       IPCCore(contractAddress).changeIpcName{value: msg.value}(tokenId, newName);
       emit nameChangeOK(tokenId, newName);
+  }
+
+  function ownerOf(uint256 tokenId)
+    public view override returns (address) {
+
+      if (_exists(tokenId) == false) {
+        return IPCCore(contractAddress).ownerOf(tokenId); 
+      }
+
+      return super.ownerOf(tokenId);
+  }
+
+  function totalSupply() public view returns (uint256) {
+    return IPCCore(contractAddress).totalSupply();
   }
 
   function getIpc(uint256 tokenId)
@@ -219,7 +228,6 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
       return token;
   }
 
-  // make a tokenIds function too
   function getTokensOfOwner(address owner, uint256 startIndex, uint256 total)
     public view
     returns(t_raw_ipc[] memory){
@@ -271,6 +279,30 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
         return IPCCore(contractAddress).ownerOf(tokenId); 
   }
 
+  function uwBalanceOf(address owner)
+    public view
+    returns(uint256){
+
+      uint256[] memory ownersTokens = IPCCore(contractAddress).tokensOfOwner(owner);
+      return ownersTokens.length;
+  }
+
+  function wGetTokenIdsOfOwner(address owner)
+    public view
+    returns(uint256[] memory){
+
+      uint256[] memory ownersTokens = tokensOfOwner[owner];
+      return ownersTokens;
+  }
+ 
+  function uwGetTokenIdsOfOwner(address owner)
+    public view
+    returns(uint256[] memory){
+
+      uint256[] memory ownersTokens = IPCCore(contractAddress).tokensOfOwner(owner);
+      return ownersTokens;
+  }
+
   function uwGetAllTokens(uint256 startIndex, uint256 total)
     public view
     returns(t_raw_ipc[] memory) {
@@ -304,14 +336,6 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
       }
 
       return tokensList;
-  }
-
-  function uwBalanceOf(address owner)
-    public view
-    returns(uint256){
-
-      uint256[] memory ownersTokens = IPCCore(contractAddress).tokensOfOwner(owner);
-      return ownersTokens.length;
   }
 
   function uwGetTokensOfOwner(address owner, uint256 startIndex, uint256 total)
@@ -358,16 +382,21 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
     contractAddress = _contractAddress;
   }
 
-  // need a set marketplaceenabled function
-  function setProperties(
+  function setTokenomics(
     uint256 _maxPrice,
     uint256 _tokenLimit,
-    string calldata __tokenURI,
-    string calldata __contractURI
+    bool _marketPlaceEnabled
   ) public onlyOwner {
 
       maxPrice = _maxPrice;
       tokenLimit = _tokenLimit;
+      marketPlaceEnabled = _marketPlaceEnabled;
+  }
+
+   function setMetaDataURIs(
+    string calldata __tokenURI,
+    string calldata __contractURI
+  ) public onlyOwner {
 
       _tokenURI = __tokenURI;
       _contractURI = __contractURI;
@@ -377,7 +406,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
     public view onlyOwner
     returns (t_properties memory) {
 
-      t_properties memory status = t_properties(
+      t_properties memory properties = t_properties(
         contractAddress,
         _tokenURI,
         _contractURI,
@@ -386,7 +415,11 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 	marketPlaceEnabled
       );
 
-    return status;
+      return properties;
+  }
+
+  function contractURI() public view returns (string memory) {
+    return _contractURI;
   }
 
   function withdrawalVault()
@@ -399,24 +432,6 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
   function _baseURI() internal view override returns (string memory) {
     return _tokenURI;
-  }
-
-  function contractURI() public view returns (string memory) {
-    return _contractURI;
-  }
-
-  function totalSupply() public view returns (uint256) {
-    return IPCCore(contractAddress).totalSupply();
-  }
-
-  function ownerOf(uint256 tokenId)
-    public view override returns (address) {
-
-      if (_exists(tokenId) == false) {
-        return IPCCore(contractAddress).ownerOf(tokenId); 
-      }
-
-      return super.ownerOf(tokenId);
   }
 
   function _afterTokenTransfers(

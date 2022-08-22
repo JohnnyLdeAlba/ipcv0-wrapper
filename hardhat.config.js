@@ -19,8 +19,8 @@ module.exports = {
       // url: "http://10.0.2.2:7545",
       url: "http://127.0.0.1:8545",
       accounts: [
-	"0x628ddd535959ddb54e4c700ea9b337fc275e621921029c6fb13c681027146f18",
-        "0x6fb867259edd6a9bf043f8dc861ee768d40b15fc398a82efb4344c1ee5aca1c1",
+	"0xf04bd513e7acc041109248ad8ef2c572e2ff106cd458f1bf07cd006a6afed584",
+        "0x2dff071309f76f8fcb5bb69ef1b36c4e5ac244d61c3f7a2eaf3c31fc163b09d6",
 	"0x7d265e8b9eb8612f36a2c9d4a1062fb9a0e5fba8f16b72e0331345df1ea7164f"
       ] 
     },
