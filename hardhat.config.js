@@ -24,13 +24,13 @@ module.exports = {
 	"0x7d265e8b9eb8612f36a2c9d4a1062fb9a0e5fba8f16b72e0331345df1ea7164f"
       ] 
     },
-
+/*
     mainnet: {
       allowUnlimitedContractSize: true,
 
       url: "",
       accounts: [ "" ] 
     }
-
+*/
   }
 };

@@ -1,5 +1,5 @@
 const contractABI = require('../IPCWrapper.abi.json');
-const oldContractABI = require('../../ipc-contract/IPCContract.abi.json');
+// const oldContractABI = require('../../ipc-contract/IPCContract.abi.json');
 
 const wrapAddress = "0xD0f54E91ee2e57EA72B0836565E8dfFDb0a5F950";
 const oldAddress = "0xACE8AA6699F1E71f07622135A93140cA296D610a";
@@ -9,7 +9,7 @@ async function main() {
   const [ deployer, account1 ] = await ethers.getSigners();
 
   const contract = new ethers.Contract(wrapAddress, contractABI, deployer);
-  const oldContract = new ethers.Contract(oldAddress, oldContractABI, deployer);
+  // const oldContract = new ethers.Contract(oldAddress, oldContractABI, deployer);
 
   let before = await deployer.getBalance();
   console.log("Account balance before: " + before);

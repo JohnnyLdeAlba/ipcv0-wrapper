@@ -4,19 +4,6 @@
   "sourceName": "contracts/IPCWrapper.sol",
   "abi": [
     {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "sender",
-          "type": "address"
-        }
-      ],
-      "name": "Logging",
-      "type": "event"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",
