@@ -8,12 +8,22 @@ interface IPCCore {
 
   function getIpc(uint256 ipcId)
     external view returns (
+
     string calldata name,
     bytes32 attributeSeed,
     bytes32 dna,
     uint128 experience,
     uint128 timeOfBirth);
 
+  struct IpcMarketInfo {
+
+    uint32 sellPrice;
+    uint32 beneficiaryPrice;
+    address beneficiaryAddress;
+    address approvalAddress;
+  }
+
+  function ipcToMarketInfo(uint key) external view returns (IpcMarketInfo memory);
   function ownerOf(uint256 tokenId) external view returns (address);
   function tokensOfOwner(address owner) external view returns (uint256[] memory);
   function totalSupply() external view returns (uint256);
@@ -41,11 +51,6 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
     bool marketPlaceEnabled;
   }
 
-  struct t_token {
-    uint tokenId;
-    address owner;
-  }
-
   struct t_raw_ipc {
     uint256 tokenId;
     string name;
@@ -54,19 +59,17 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
     uint128 experience;
     uint128 timeOfBirth;
     address owner;
+    uint256 price;
   }
-
-  address contractAddress;
 
   string _tokenURI;
   string _contractURI;
 
+  address contractAddress;
   uint256 maxPrice;
   uint256 tokenLimit;
   bool marketPlaceEnabled;
 
-  // mapping(uint256 => t_token) tokens;
-  // mapping(uint256 => uint256) tokenIndexList;
   mapping(address => uint256[]) tokensOfOwner;
 
   event Wrapped(uint256 tokenId, address owner);
@@ -75,9 +78,11 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
   constructor() ERC721("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0xC8f17e7A7911A409ABb8e24668D5e24956D5caCc;
-    _tokenURI = "https://nexusultima.com/ipcv0/tokens/";
-    _contractURI = "https://nexusultima.com/ipcv0/contract/";
+    // contractAddress = 0x4787993750B897fBA6aAd9e7328FC4F5C126e17c;
+    contractAddress = 0x1B171C2E72f529377949a5B597E93DC14Da586A7;
+
+    _tokenURI = "ipfs://bafybeiew3tzikhkjjczicycey6dgmddemmrbp3clsw7u5zdxgjsn4ss4yi/";
+    _contractURI = "ipfs://bafybeiew3tzikhkjjczicycey6dgmddemmrbp3clsw7u5zdxgjsn4ss4yi/contract.json";
 
     maxPrice = 1000000;
     tokenLimit = 1000;
@@ -212,7 +217,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 	uint128 timeOfBirth
       ) = IPCCore(contractAddress).getIpc(tokenId);
 
-      // consdier adding marketplaceinfo and more.
+      IPCCore.IpcMarketInfo memory marketInfo = IPCCore(contractAddress).ipcToMarketInfo(tokenId);
 
       address owner = ownerOf(tokenId);
       t_raw_ipc memory token = t_raw_ipc(	  
@@ -222,7 +227,8 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
         dna,
         experience,
         timeOfBirth,
-        owner
+        owner,
+	marketInfo.sellPrice
       );
 
       return token;
@@ -434,15 +440,15 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
     return _tokenURI;
   }
 
-  function _afterTokenTransfers(
+  function _afterTokenTransfer(
     address from,
     address to,
     uint256 tokenId
-  ) internal {
+  ) internal override {
 
       // mint
       if (from == address(0))
-        tokensOfOwner[msg.sender].push(tokenId);
+        tokensOfOwner[to].push(tokenId);
       // burn
       else if (to == address(0))
         _removeOwnersToken(from, tokenId);
