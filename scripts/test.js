@@ -1,8 +1,8 @@
 const contractABI = require('../IPCWrapper.abi.json');
 const oldContractABI = require('../../ipc-contract/IPCContract.abi.json');
 
-const wrapAddress = "0x7358347Bc59B4a0979361d2e89999E28E9cAFEfd";
-const oldAddress = "0x1B171C2E72f529377949a5B597E93DC14Da586A7";
+const wrapAddress = "0x08dCc023F6fA512bFa5a35c2Beb1F9f4875E79dB";
+const oldAddress = "0x4F9Ac42c1a327BafE44c213c8b3b1e16e499Aaa7";
 
 // approve, wrap, unwrap
 // deployer: approve, wrap, setPrice, buy, transfer to account1, deployer: unwrap
@@ -51,7 +51,7 @@ async function main() {
   // await oldContract.connect(deployer).approve(wrapAddress, tokenId);
   // await contract.connect(deployer).wrap(tokenId);
   // await contract.connect(deployer).changeIpcName(tokenId, "Grumble");
-
+/*
   message = []
   message[0] = await contract.connect(deployer).totalSupply();
   message[1] = await contract.connect(deployer).uwBalanceOf(deployer.address);
@@ -60,7 +60,7 @@ async function main() {
   message[4] = await contract.connect(deployer).wOwnerOf(tokenId);
 
   console.log(message);
-
+*/
   // await oldContract.connect(deployer).setIpcPrice(tokenId, 0);
   // await oldContract.connect(deployer).buyIpc(tokenId, 0);
 

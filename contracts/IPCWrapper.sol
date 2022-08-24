@@ -78,8 +78,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
   constructor() ERC721("Immortal Player Characters v0", "IPCV0") {
 
-    // contractAddress = 0x4787993750B897fBA6aAd9e7328FC4F5C126e17c;
-    contractAddress = 0x1B171C2E72f529377949a5B597E93DC14Da586A7;
+    contractAddress = 0x4787993750B897fBA6aAd9e7328FC4F5C126e17c;
 
     _tokenURI = "ipfs://bafybeiew3tzikhkjjczicycey6dgmddemmrbp3clsw7u5zdxgjsn4ss4yi/";
     _contractURI = "ipfs://bafybeiew3tzikhkjjczicycey6dgmddemmrbp3clsw7u5zdxgjsn4ss4yi/contract.json";
@@ -191,16 +190,6 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
       emit nameChangeOK(tokenId, newName);
   }
 
-  function ownerOf(uint256 tokenId)
-    public view override returns (address) {
-
-      if (_exists(tokenId) == false) {
-        return IPCCore(contractAddress).ownerOf(tokenId); 
-      }
-
-      return super.ownerOf(tokenId);
-  }
-
   function totalSupply() public view returns (uint256) {
     return IPCCore(contractAddress).totalSupply();
   }
@@ -219,7 +208,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
       IPCCore.IpcMarketInfo memory marketInfo = IPCCore(contractAddress).ipcToMarketInfo(tokenId);
 
-      address owner = ownerOf(tokenId);
+      address owner = wuwOwnerOf(tokenId);
       t_raw_ipc memory token = t_raw_ipc(	  
         tokenId,
         name,
@@ -283,6 +272,16 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
   function uwOwnerOf(uint256 tokenId)
     public view returns (address) {
         return IPCCore(contractAddress).ownerOf(tokenId); 
+  }
+
+  function wuwOwnerOf(uint256 tokenId)
+    public view returns (address) {
+
+      if (_exists(tokenId) == false) {
+        return IPCCore(contractAddress).ownerOf(tokenId); 
+      }
+
+      return super.ownerOf(tokenId);
   }
 
   function uwBalanceOf(address owner)
