@@ -1,1 +1,1 @@
-ganache-cli --allowUnlimitedContractSize=true -a -g=90000000 -l=900000000
+ganache-cli --allowUnlimitedContractSize=true -g=90000000 -l=90000000 --chainId 666 -h 0.0.0.0

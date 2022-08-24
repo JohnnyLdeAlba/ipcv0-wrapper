@@ -368,8 +368,8 @@
       ]
     },
     "/var/www/ipcv0-wrapper/contracts/IPCWrapper.sol": {
-      "lastModificationDate": 1661371092612,
-      "contentHash": "e44b1c435ffb3b5f137451f04068a009",
+      "lastModificationDate": 1661376666768,
+      "contentHash": "96a47201076e8b233afcf05128f15bef",
       "sourceName": "contracts/IPCWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -448,6 +448,43 @@
       ],
       "artifacts": [
         "ERC721"
+      ]
+    },
+    "/var/www/ipcv0-wrapper/contracts/IPCContract.sol": {
+      "lastModificationDate": 1661382400118,
+      "contentHash": "ede710c202f45106c3657e0dff185e11",
+      "sourceName": "contracts/IPCContract.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ERC721.sol"
+      ],
+      "versionPragmas": [
+        "0.8.9"
+      ],
+      "artifacts": [
+        "IPCContract"
       ]
     }
   }

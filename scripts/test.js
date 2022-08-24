@@ -1,8 +1,8 @@
-const contractABI = require('../IPCWrapper.abi.json');
-const oldContractABI = require('../../ipc-contract/IPCContract.abi.json');
+const contractABI = require('../ipc-wrapper.abi.json');
+const oldContractABI = require('../ipc-contract.abi.json');
 
-const wrapAddress = "0xD58A8b38BAA0B826ebB9e2b8A320C7160bAabb0F";
-const oldAddress = "0x29b3A1F10f9ACC50805da6a90838fABd6b69FAD2";
+const wrapAddress = "0x36Ec4876Dd102addc68b9b62Bd285Ea0F726524B";
+const oldAddress = "0x00e4c0b2dCC5d1a1615030CA2378464bf22F5F6A";
 
 // approve, wrap, unwrap
 // deployer: approve, wrap, setPrice, buy, transfer to account1, deployer: unwrap
@@ -37,22 +37,22 @@ async function main() {
   console.log("Before Source ownerOf: " + message);
 
   // await oldContract.connect(deployer).approve(wrapAddress, tokenId);
-  // await contract.connect(deployer).unwrap(tokenId);
+  // await contract.connect(deployer).wrap(tokenId);
 
-  message = await contract.wBalanceOf(deployer.address);
-  console.log("Returned: " + message);
+  // message = await contract.wBalanceOf(deployer.address);
+  // console.log("Returned: " + message);
 
-  message = await contract.uwBalanceOf(deployer.address);
-  console.log("Returned: " + message);
+  // message = await contract.uwBalanceOf(deployer.address);
+  // console.log("Returned: " + message);
 
-  message = await contract.wuwOwnerOf(1);
-  console.log("Returned: " + message);
+  // message = await contract.wuwOwnerOf(1);
+  // console.log("Returned: " + message);
 
   let index = 0;
   for (index = 0; index < 20; index++) {
 
     // await oldContract.connect(deployer).approve(wrapAddress, tokenId + index);
-    await contract.connect(deployer).unwrap(tokenId + index);
+    //await contract.connect(deployer).unwrap(tokenId + index);
     // await contract.connect(account1).approve(deployer.address, tokenId + index);
     // await contract.connect(deployer)["safeTransferFrom(address,address,uint256)"](account1.address, deployer.address, tokenId + index);
   }
@@ -79,8 +79,10 @@ async function main() {
   // await contract.connect(account1).unwrap(tokenId);
 
   // await contract.connect(account1).unwrap(tokenId);
+  message = await contract.connect(deployer).uwOwnerOf(1);
+  console.log(message);
 
-  message = await contract.connect(deployer).wGetTokensOfOwner(deployer.address, 0, 20);
+  message = await contract.connect(deployer).uwGetTokensOfOwner(deployer.address, 0, 20);
   console.log(message);
 
   // await contract.connect(deployer).setContractAddress("0x1B171C2E72f529377949a5B597E93DC14Da586A7");

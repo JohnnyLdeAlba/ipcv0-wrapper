@@ -76,10 +76,9 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
   event Unwrapped(uint256 tokenId, address owner);
   event nameChangeOK(uint256 tokenId, string name);
 
-  constructor() ERC721("Immortal Player Characters v0", "IPCV0") {
+  constructor(address _contractAddress) ERC721("Immortal Player Characters v0", "IPCV0") {
 
-    contractAddress = 0x29b3A1F10f9ACC50805da6a90838fABd6b69FAD2;
-    // contractAddress = 0x4787993750B897fBA6aAd9e7328FC4F5C126e17c;
+    contractAddress = _contractAddress;
 
     _tokenURI = "ipfs://bafybeiew3tzikhkjjczicycey6dgmddemmrbp3clsw7u5zdxgjsn4ss4yi/";
     _contractURI = "ipfs://bafybeiew3tzikhkjjczicycey6dgmddemmrbp3clsw7u5zdxgjsn4ss4yi/contract.json";
