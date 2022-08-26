@@ -74,8 +74,8 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
   event Wrapped(uint256 tokenId, address owner);
   event Unwrapped(uint256 tokenId, address owner);
-  event nameChangeOK(uint256 tokenId, string name);
-
+  event WrapX(address owner, bool wrapTokens, uint256 totalTokens);
+  
   constructor(address _contractAddress) ERC721("Immortal Player Characters v0", "IPCV0") {
 
     contractAddress = _contractAddress;
@@ -115,8 +115,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
   }
 
   // Wrap function doesn't work without prior approval.
-  function wrap(uint256 tokenId)
-    external {
+  function wrap(uint256 tokenId) public {
 
       if (tokenId > tokenLimit)
         revert("TOKEN_LIMIT_REACHED");
@@ -131,7 +130,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
 
       address sourceOwner = uwOwnerOf(tokenId);
       if (sourceOwner != msg.sender)
-        revert("NOT_OWNERS_TOKEN");
+        revert("WRAPPED_NOT_OWNER");
 
       IPCCore(contractAddress).safeTransferFrom(
         msg.sender,
@@ -168,7 +167,7 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
       revert("TOKEN_NOT_WRAPPED");
 
     else if (wrappedOwner != msg.sender)
-      revert("NOT_OWNERS_TOKEN");
+      revert("UNWRAPPED_NOT_OWNER");
 
     address sourceOwner = uwOwnerOf(tokenId);
 
@@ -190,19 +189,52 @@ contract IPCWrapper is Ownable, IERC721Receiver, ERC721 {
     emit Unwrapped(tokenId, msg.sender);
   }
 
-  // changeIpcName only works on wrapped tokens.
-  function changeIpcName(uint tokenId, string calldata newName)
+  function wrapX(uint256 totalTokens, bool wrapTokens)
+    external {
+
+    uint256[] memory ownersTokenIds;
+   
+    if (wrapTokens == true)
+      ownersTokenIds = uwGetTokenIdsOfOwner(msg.sender);
+    else
+      ownersTokenIds = wGetTokenIdsOfOwner(msg.sender);
+
+    uint256 tokenId;
+
+    if (totalTokens == 0 || totalTokens >= ownersTokenIds.length)
+      totalTokens = ownersTokenIds.length;
+
+    for (uint256 index = 0; index < totalTokens; index++) {
+
+      tokenId = ownersTokenIds[index];
+      if (tokenId <= 0)
+        continue;
+     
+      if (wrapTokens == true)
+        wrap(tokenId);
+      else
+        unwrap(tokenId);
+    }
+
+    emit WrapX(msg.sender, wrapTokens, totalTokens);
+  }
+
+/* Removed to reduce contract size so it can be deployable.
+
+   // changeIpcName only works on wrapped tokens.
+  function changeIpcName(uint256 tokenId, string calldata newName)
     external payable {
 
       if (wOwnerOf(tokenId) != msg.sender)
-        revert("TOKEN_NOT_OWNER");
+        revert("NAMECHANGE_NOT_OWNER");
 
       if (marketPlaceEnabled == false)
-        revert("MARKETPLACE_DISABLED");
+        revert("NAMECHANGE_DISABLED");
 
       IPCCore(contractAddress).changeIpcName{value: msg.value}(tokenId, newName);
       emit nameChangeOK(tokenId, newName);
   }
+*/
 
   function totalSupply() public view returns (uint256) {
     return IPCCore(contractAddress).totalSupply();
